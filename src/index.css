@@ -1,0 +1,468 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+
+:root {
+  --swiggy-orange: #FC8019;
+  --swiggy-orange-rgb: 252, 128, 25;
+  --swiggy-dark: #282C3F;
+  --swiggy-text-main: #3D4152;
+  --swiggy-text-sub: #7E808C;
+  --swiggy-light-gray: #F4F4F5;
+  
+  /* Glassmorphism & UI System */
+  --font-main: 'Plus Jakarta Sans', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 25px rgba(252, 128, 25, 0.35);
+  
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Default light theme constants */
+  --bg-app: #F8F9FA;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --border-color: rgba(228, 228, 231, 0.8);
+  --text-title: #1E202B;
+  --text-body: #4A4D5C;
+  --text-muted: #8E91A1;
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-blur: 16px;
+}
+
+[data-theme="dark"] {
+  --bg-app: #0F0F12;
+  --bg-card: rgba(24, 24, 28, 0.85);
+  --border-color: rgba(63, 63, 70, 0.5);
+  --text-title: #F4F4F5;
+  --text-body: #D4D4D8;
+  --text-muted: #A1A1AA;
+  --glass-bg: rgba(15, 15, 18, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --swiggy-dark: #121214;
+}
+
+/* Weather UI Themes */
+.theme-sunny {
+  --weather-primary: #FFB300;
+  --weather-gradient: linear-gradient(135deg, rgba(255, 236, 179, 0.45) 0%, rgba(255, 224, 130, 0.1) 100%);
+  --weather-glow: rgba(255, 179, 0, 0.2);
+}
+
+.theme-rainy {
+  --weather-primary: #3A88FE;
+  --weather-gradient: linear-gradient(135deg, rgba(186, 230, 253, 0.45) 0%, rgba(125, 211, 252, 0.1) 100%);
+  --weather-glow: rgba(58, 136, 254, 0.2);
+}
+
+.theme-cold {
+  --weather-primary: #00E5FF;
+  --weather-gradient: linear-gradient(135deg, rgba(224, 247, 250, 0.45) 0%, rgba(178, 235, 242, 0.1) 100%);
+  --weather-glow: rgba(0, 229, 255, 0.2);
+}
+
+.theme-stormy {
+  --weather-primary: #7C4DFF;
+  --weather-gradient: linear-gradient(135deg, rgba(237, 231, 246, 0.45) 0%, rgba(209, 196, 233, 0.1) 100%);
+  --weather-glow: rgba(124, 77, 255, 0.2);
+}
+
+.theme-humid {
+  --weather-primary: #00BFA5;
+  --weather-gradient: linear-gradient(135deg, rgba(224, 242, 241, 0.45) 0%, rgba(178, 223, 219, 0.1) 100%);
+  --weather-glow: rgba(0, 191, 165, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-main);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(252, 128, 25, 0.3);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--swiggy-orange);
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-body);
+  transition: background-color var(--transition-slow), color var(--transition-normal);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(1); box-shadow: 0 0 10px rgba(252, 128, 25, 0.2); }
+  50% { transform: scale(1.02); box-shadow: 0 0 25px rgba(252, 128, 25, 0.5); }
+  100% { transform: scale(1); box-shadow: 0 0 10px rgba(252, 128, 25, 0.2); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+.anim-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.anim-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+
+.anim-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Layout Utilities */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border var(--transition-normal);
+}
+
+.glass-panel:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.orange-btn {
+  background: linear-gradient(135deg, var(--swiggy-orange) 0%, #E66A00 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(252, 128, 25, 0.3);
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.orange-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(252, 128, 25, 0.5);
+  background: linear-gradient(135deg, #FF8F33 0%, var(--swiggy-orange) 100%);
+}
+
+.orange-btn:active {
+  transform: translateY(0);
+}
+
+/* Specific Page Styles */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 28px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.restaurant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* Chat Assistant Styles */
+.chat-widget {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 100;
+}
+
+.chat-bubble-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--swiggy-orange);
+  box-shadow: var(--shadow-glow);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 4px solid var(--bg-app);
+  color: white;
+  transition: all var(--transition-normal);
+  animation: pulseGlow 3s infinite;
+}
+
+.chat-bubble-btn:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.chat-window {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  width: 400px;
+  height: 600px;
+  max-height: 80vh;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-xl);
+  animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.chat-header {
+  background: linear-gradient(135deg, var(--swiggy-dark) 0%, #1A1C29 100%);
+  color: white;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--bg-card);
+}
+
+.chat-msg-bubble {
+  max-width: 80%;
+  padding: 12px 18px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.chat-msg-bot {
+  background: var(--bg-app);
+  color: var(--text-body);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.chat-msg-user {
+  background: var(--swiggy-orange);
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-input-area {
+  padding: 16px;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input {
+  flex: 1;
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  outline: none;
+  background: var(--bg-app);
+  color: var(--text-body);
+  transition: border-color var(--transition-fast);
+}
+
+.chat-input:focus {
+  border-color: var(--swiggy-orange);
+}
+
+/* Email Drawer */
+.email-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 380px;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  z-index: 95;
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.08);
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+  transform: translateY(100%);
+  transition: transform var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+
+.email-drawer.open {
+  transform: translateY(0);
+}
+
+.email-drawer-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-app);
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+}
+
+.email-list-container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+.email-sidebar {
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.email-item {
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: background var(--transition-fast);
+}
+
+.email-item:hover {
+  background: var(--bg-app);
+}
+
+.email-item.active {
+  background: rgba(252, 128, 25, 0.08);
+  border-left: 3px solid var(--swiggy-orange);
+}
+
+.email-content-view {
+  padding: 24px;
+  overflow-y: auto;
+  background: white;
+  color: #333;
+}
+
+/* Custom UI styling helpers */
+.badge-match {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-image-wrapper {
+  position: relative;
+  height: 180px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.dish-card:hover .card-image {
+  transform: scale(1.06);
+}
+
+.diet-dot {
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid currentColor;
+  padding: 2px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.diet-dot-veg {
+  color: #0F8A5F;
+}
+
+.diet-dot-nonveg {
+  color: #C52E23;
+}
+
+.diet-dot-inner {
+  width: 6px;
+  height: 6px;
+  background-color: currentColor;
+  border-radius: 50%;
+}
